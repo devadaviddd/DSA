@@ -1,27 +1,27 @@
 class Robot {
-    Coordinate currentPoint = new Coordinate(0, 0);
+    private int row;
+    private int col;
 
     public Robot(int robotRow, int robotColumn) {
-        currentPoint.row = robotRow;
-        currentPoint.col = robotColumn;
+        row = robotRow;
+        col = robotColumn;
     }
 
     public void navigate() {
-        char[][] map = new char[][]{ //robot at r = 2 and c = 1
-                {'.', '.', '.', '.'},
-                {'.', ' ', ' ', '.'},
-                {'.', ' ', ' ', '.'},
-                {'.', ' ', ' ', '.'},
-                {'.', '.', 'X', '.'},
+        String[] map = new String[7];
+        map[0] = "......................";
+        map[1] = ". ....................";
+        map[2] = ". ....................";
+        map[3] = ".                    .";
+        map[4] = ".................... .";
+        map[5] = ".X                   .";
+        map[6] = "......................";
 
-        };
-        Maze maze = new Maze(map);
-        maze.robotCol = this.currentPoint.col;
-        maze.robotRow = this.currentPoint.row;
-        String direction = "DOWN";
-        System.out.println(maze.go(direction));
+        Maze maze = new Maze(map, row, col);
+        maze.robotCol = this.col;
+        maze.robotRow = this.row;
+        maze.go("UP");
         maze.printMaze();
-        System.out.println(maze.cnt);
     }
 
 }

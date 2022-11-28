@@ -1,13 +1,13 @@
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Maze {
     int rowsMap;
     int colsMap;
-    char[][] map;
-    int steps;
-    int cnt = 0;
+    String[] map;
+    int steps = 0;
 
     int robotRow;
 
@@ -15,17 +15,19 @@ public class Maze {
 
     StringBuilder path = new StringBuilder();
 
-    public Maze(char[][] map) {
+    public Maze(String[] map, int robotRow, int robotCol) {
         this.map = map;
         this.rowsMap = map.length;
-        this.colsMap = map[0].length;
-        steps = 0;
+        this.colsMap = map[0].length();
+        this.robotRow = robotRow;
+        this.robotCol = robotCol;
+
     }
 
     public void printMaze() {
         for(int i = 0; i < rowsMap; i++) {
-            for(int j = 0; j < colsMap; j++) {
-                System.out.print(map[i][j] + " ");
+            for(int j = 0; j < map[i].length(); j++) {
+                System.out.print(map[i].charAt(j));
             }
             System.out.println();
         }
@@ -50,45 +52,45 @@ public class Maze {
         char moveToUp = 0, moveToRight = 0, moveToLeft = 0, moveToDown = 0;
         String reached = "false";
 
-        if(direction.equals("UP")) {
-            moveToUp = this.map[robotRow - 1][robotCol];
-        } else if(direction.equals("DOWN")) {
-            moveToDown = this.map[robotRow + 1][robotCol];
-        } else if(direction.equals("LEFT")) {
-            moveToLeft = this.map[robotRow][robotCol - 1];
-        } else {
-            moveToRight = this.map[robotRow][robotCol + 1];
-        }
+        moveToUp = this.map[robotRow - 1].charAt(robotCol);
+        moveToDown = this.map[robotRow + 1].charAt(robotCol);
+        moveToLeft = this.map[robotRow].charAt(robotCol - 1);
+        moveToRight = this.map[robotRow].charAt(robotCol + 1);
 
-        if(moveToUp == 'X' || moveToDown == 'X' || moveToLeft == 'X' || moveToRight == 'X') {
-//            this.map[robotRow][robotCol] = '+'; // draw the path as '+'
+        if (moveToUp == 'X' || moveToDown == 'X' || moveToLeft == 'X' || moveToRight == 'X') {
             System.out.println(direction);
+            StringBuilder stringBuilder = new StringBuilder(this.map[robotRow]);
+            stringBuilder.setCharAt(robotCol, '+');
+            this.map[robotRow] = String.valueOf(stringBuilder);
             return "True";
         }
 
-/*
-        if(this.map[robotRow][robotCol] == ' ') {
-            this.map[robotRow][robotCol] = '+';
+        if(this.map[robotRow].charAt(robotCol) == ' ') {
+            StringBuilder stringBuilder = new StringBuilder(this.map[robotRow]);
+            stringBuilder.setCharAt(robotCol, '+');
+            this.map[robotRow] = String.valueOf(stringBuilder);
         }
-*/
 
-        if (moveToUp == ' ' &&  reached.equals("false")) {
-            System.out.println("UP");
+        if (moveToUp == ' ' && reached.equals("false")) {
+            System.out.println(direction);
             robotRow = robotRow - 1;
+            reached = go("UP");
         }
         if (moveToDown == ' ' && reached.equals("false")) {
-            System.out.println("DOWN");
+            System.out.println(direction);
             robotRow = robotRow + 1;
+            reached = go("DOWN");
         }
-        if (moveToLeft == ' ' &&  reached.equals("false")) {
-            System.out.println("LEFT");
+        if (moveToLeft == ' ' && reached.equals("false")) {
+            System.out.println(direction);
             robotCol = robotCol - 1;
+            reached = go("LEFT");
         }
-        if(moveToRight == ' ' &&  reached.equals("false")) {
-            System.out.println("RIGHT");
+        if (moveToRight == ' ' && reached.equals("false")) {
+            System.out.println(direction);
             robotCol = robotCol + 1;
+            reached = go("RIGHT");
         }
-        reached = go(randomDirection());
         return reached;
     }
 
