@@ -1,19 +1,12 @@
 public class Cell {
     private int x;
     private int y;
-    private String direction = "";
-
-    private int numOfDirectionChecked;
+    private int direction; // 0 --> Up || 1 --> Left || 2 --> Down || 3 --> Right
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        this.direction = "UP"; //         this.direction = "UP";
-        this.numOfDirectionChecked = 0; // 0 -> UP || 1 --> DOWN || 2 --> LEFT || 3 --> RIGHT
-    }
-
-    public Cell() {
-
+        direction = 0;
     }
 
     public int getX() {
@@ -32,19 +25,11 @@ public class Cell {
         this.y = y;
     }
 
-    public String getDirection() {
+    public int getDirection() {
         return direction;
     }
 
-    public void setDirection(String direction) {
+    public void setDirection(int direction) {
         this.direction = direction;
-    }
-
-    public int getNumOfDirectionChecked() {
-        return numOfDirectionChecked;
-    }
-
-    public void setNumOfDirectionChecked(int numOfDirectionChecked) {
-        this.numOfDirectionChecked = numOfDirectionChecked;
     }
 }
