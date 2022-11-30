@@ -7,20 +7,36 @@ public class Maze {
     int rowsMap;
     int colsMap;
     String[] map;
+
+    char[][] mapChar2D;
     int steps = 0;
 
     int robotRow;
 
     int robotCol;
 
+    int finishRow;
+
+    int finishCol;
+
+    boolean[][] visited;
+
     StringBuilder path = new StringBuilder();
 
-    public Maze(String[] map, int robotRow, int robotCol) {
+    public Maze(int robotRow, int robotCol) {
+        String[] map = new String[4];
+        map[0] = ".....";
+        map[1] = ".   .";
+        map[2] = ". X .";
+        map[3] = ".....";
         this.map = map;
+
         this.rowsMap = map.length;
         this.colsMap = map[0].length();
         this.robotRow = robotRow;
         this.robotCol = robotCol;
+        this.visited = new boolean[rowsMap][colsMap];
+
 
     }
 
@@ -48,50 +64,47 @@ public class Maze {
         return direction;
     }
 
-    public String go(String direction) {
-        char moveToUp = 0, moveToRight = 0, moveToLeft = 0, moveToDown = 0;
-        String reached = "false";
+    public void passDataToMaze(int currentRow, int currentCol, int finishRow, int finishCol, boolean[][] visited) {
+        this.robotRow = currentRow;
+        this.robotCol = currentCol;
+        this.finishRow = finishRow;
+        this.finishCol = finishCol;
+        this.visited = visited;
+        /*System.out.println(Arrays.deepToString(this.visited));*/
 
-        moveToUp = this.map[robotRow - 1].charAt(robotCol);
-        moveToDown = this.map[robotRow + 1].charAt(robotCol);
-        moveToLeft = this.map[robotRow].charAt(robotCol - 1);
-        moveToRight = this.map[robotRow].charAt(robotCol + 1);
 
-        if (moveToUp == 'X' || moveToDown == 'X' || moveToLeft == 'X' || moveToRight == 'X') {
-            System.out.println(direction);
-            StringBuilder stringBuilder = new StringBuilder(this.map[robotRow]);
-            stringBuilder.setCharAt(robotCol, '+');
-            this.map[robotRow] = String.valueOf(stringBuilder);
-            return "True";
-        }
-
-        if(this.map[robotRow].charAt(robotCol) == ' ') {
-            StringBuilder stringBuilder = new StringBuilder(this.map[robotRow]);
-            stringBuilder.setCharAt(robotCol, '+');
-            this.map[robotRow] = String.valueOf(stringBuilder);
-        }
-
-        if (moveToUp == ' ' && reached.equals("false")) {
-            System.out.println(direction);
-            robotRow = robotRow - 1;
-            reached = go("UP");
-        }
-        if (moveToDown == ' ' && reached.equals("false")) {
-            System.out.println(direction);
-            robotRow = robotRow + 1;
-            reached = go("DOWN");
-        }
-        if (moveToLeft == ' ' && reached.equals("false")) {
-            System.out.println(direction);
-            robotCol = robotCol - 1;
-            reached = go("LEFT");
-        }
-        if (moveToRight == ' ' && reached.equals("false")) {
-            System.out.println(direction);
-            robotCol = robotCol + 1;
-            reached = go("RIGHT");
-        }
-        return reached;
     }
+
+    public String go(String direction) {
+        if(direction.equals("UP")) {
+            if(robotRow - 1 >= 0 && (mapChar2D[robotRow - 1][robotCol] == ' ' || mapChar2D[robotRow - 1][robotCol] == 'X') && !visited[robotRow - 1][robotCol]) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } else if(direction.equals("LEFT")) {
+            if (robotCol - 1 >= 0 && (mapChar2D[robotRow][robotCol - 1] == ' ' ||  mapChar2D[robotRow ][robotCol - 1] == 'X')  &&
+                    !visited[robotRow][robotCol - 1]) {
+                return "true";
+            } else {
+                return "false";
+            }
+        }  else if(direction.equals("DOWN")) {
+            if (robotRow + 1 < rowsMap && (mapChar2D[robotRow + 1][robotCol] == ' ' ||  mapChar2D[robotRow + 1][robotCol] == 'X') &&
+                    !visited[robotRow + 1][robotCol]) {
+                return "true";
+            } else {
+                return "false";
+            }
+        } else { // direction equals "RIGHT"
+            if (robotCol + 1 < colsMap && (mapChar2D[robotRow][robotCol + 1] == ' ' ||  mapChar2D[robotRow][robotCol + 1] == 'X') &&
+                    !visited[robotRow][robotCol + 1]) {
+                return "true";
+            } else {
+                return "false";
+            }
+        }
+    }
+
 
 }
