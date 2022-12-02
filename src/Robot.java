@@ -41,7 +41,7 @@ class Robot {
 
         // convert String[] to char[][]
 
-        char[][] map = convertTo2Darr(maze.map);
+        char[][] map = convertTo2Darr(maze.getMap());
 
         // pass the mapChar2D to Maze class
         maze.mapChar2D = map;

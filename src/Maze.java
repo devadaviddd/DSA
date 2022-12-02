@@ -4,20 +4,20 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Maze {
-    int rowsMap;
-    int colsMap;
-    String[] map;
+    private int rowsMap;
+    private int colsMap;
+    private String[] map;
 
     char[][] mapChar2D;
     int steps = 0;
 
-    int robotRow;
+    private int robotRow;
 
-    int robotCol;
+    private int robotCol;
 
-    int finishRow;
+    private int finishRow;
 
-    int finishCol;
+    private int finishCol;
 
     boolean[][] visited;
 
@@ -106,5 +106,7 @@ public class Maze {
         }
     }
 
-
+    public String[] getMap() {
+        return map;
+    }
 }
