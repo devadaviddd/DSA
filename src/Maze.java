@@ -24,11 +24,23 @@ public class Maze {
     StringBuilder path = new StringBuilder();
 
     public Maze(int robotRow, int robotCol) {
-        String[] map = new String[4];
-        map[0] = ".....";
-        map[1] = ".   .";
-        map[2] = ". X .";
-        map[3] = ".....";
+/*        String[] map = new String[7];
+        map[0] = "................";
+        map[1] = ".              .";
+        map[2] = ".....          .";
+        map[3] = ".   .          .";
+        map[4] = ".    .         .";
+        map[5] = ".  .          X.";
+        map[6] = "................";*/
+
+        String[] map = new String[7];
+        map[0] = "........";
+        map[1] = ".      .";
+        map[2] = ".....  .";
+        map[3] = ".  X.  .";
+        map[4] = ".    . .";
+        map[5] = ".  .   .";
+        map[6] = "........";
         this.map = map;
 
         this.rowsMap = map.length;
@@ -48,6 +60,7 @@ public class Maze {
             System.out.println();
         }
     }
+
 
     String randomDirection() {
         String direction = "";

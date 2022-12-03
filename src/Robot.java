@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 class Robot {
     private int row;
@@ -33,6 +35,9 @@ class Robot {
         return coordinateOfX;
     }
 
+    // imple algorithm
+
+    /* navigate ( while algorithm --> breakdown go(STring) */
     public void navigate() {
 
         Maze maze = new Maze(row, col);
@@ -53,6 +58,8 @@ class Robot {
         int currentRow = row;
         int currentCol = col;
 
+        visited[currentRow][currentCol] = true;
+
         // Coordinate of X point
         int finishRow = coordinateOfFinishPoint(map)[0];
         int finishCol = coordinateOfFinishPoint(map)[1];
@@ -63,6 +70,13 @@ class Robot {
         Cell currentCell = new Cell(currentRow, currentCol);
 
         stack.push(currentCell);
+
+
+
+        String strDirection = "UP";
+
+        LinkedList<Cell> listCellPass = new LinkedList<>();
+        listCellPass.add(currentCell);
 
         while (!stack.isEmpty()) {
             // Peek the Top Cell
@@ -77,9 +91,12 @@ class Robot {
             //  move to clockwise according to the direction state of the cell by increasing the direction variable
             currentCell.setDirection(currentCell.getDirection() + 1);
 
+
             // Pop the Top Cell and Push again to update the new direction state for that current Cell
             stack.pop();
             stack.push(currentCell);
+
+
 
             // Base case if we reach the Exit Gate
             if(currentRow == finishRow && currentCol == finishCol) {
@@ -87,42 +104,77 @@ class Robot {
                 break;
             }
 
+
             // If direction is Up
             if(direction == 0) {
                 if(maze.go("UP").equals("true")) {
                     System.out.println("UP");
                     Cell nextCell = new Cell(currentRow - 1, currentCol);
                     visited[currentRow - 1][currentCol] = true;
+
+                    /* direction reverse */
+                    currentCell.path = "DOWN";
+                    listCellPass.add(currentCell);
+
                     stack.push(nextCell);
-                }
+                } /*else {
+                    System.out.println("UP Detected Wall");
+
+                }*/
+
             } else if(direction == 1) { // if direction is LEFT
                 if(maze.go("LEFT").equals("true")) {
                     System.out.println("LEFT");
                     Cell nextCell = new Cell(currentRow, currentCol - 1);
                     visited[currentRow][currentCol - 1] = true;
+
+                    /* direction reverse */
+                    currentCell.path = "RIGHT";
+                    listCellPass.add(currentCell);
+
                     stack.push(nextCell);
-                }
+                } /*else {
+                    System.out.println("LEFT Detected Wall");
+                }*/
             } else if(direction == 2) { // if direction is DOWN
                 if(maze.go("DOWN").equals("true")) {
                     System.out.println("DOWN");
                     Cell nextCell = new Cell(currentRow + 1, currentCol);
                     visited[currentRow + 1][currentCol] = true;
+
+                    /* direction reverse */
+                    currentCell.path = "UP";
+                    listCellPass.add(currentCell);
+
                     stack.push(nextCell);
-                }
+                } /*else {
+                    System.out.println("DOWN Detected Wall");
+                }*/
             } else if(direction == 3) { // if direction is RIGHT
                 if(maze.go("RIGHT").equals("true")) {
                     System.out.println("RIGHT");
                     Cell nextCell = new Cell(currentRow , currentCol + 1);
+
                     visited[currentRow][currentCol + 1] = true;
+
+                    /* direction reverse */
+                    currentCell.path = "LEFT";
+                    listCellPass.add(currentCell);
+
                     stack.push(nextCell);
-                }
+                } /*else {
+                    System.out.println("RIGHT Detected Wall");
+                }*/
+
             } else {
                 /* if both direction return false then retract to the cell where the robot located*/
                 visited[currentCell.getX()][currentCell.getY()] = false;
+                /*System.out.println("Back " +  currentCell.path);*/
+                System.out.println("Back " + listCellPass.getLast().path);
+                listCellPass.removeLast();
                 stack.pop();
             }
         }
-
     }
 
 }
