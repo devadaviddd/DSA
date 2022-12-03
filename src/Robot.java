@@ -1,68 +1,28 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 class Robot {
-    private int row;
-    private int col;
 
-    public Robot(int robotRow, int robotColumn) {
-        row = robotRow;
-        col = robotColumn;
+    public Robot() {
+
     }
 
-    public char[][] convertTo2Darr(String[] map) {
-        char[][] maze = new char[map.length][map[0].length()];
-        for(int i = 0; i < map.length; i++) {
-            for(int j = 0; j < map[0].length(); j++) {
-                maze[i][j] = map[i].charAt(j);
-            }
-        }
-        return maze;
-    }
-
-    public int[] coordinateOfFinishPoint(char[][] map) {
-        int[] coordinateOfX = new int[2];
-        for(int i = 0; i < map.length; i++) {
-            for(int j = 0; j < map[0].length; j++) {
-                if(map[i][j] == 'X') {
-                    coordinateOfX[0] = i;
-                    coordinateOfX[1] = j;
-                }
-
-            }
-        }
-        return coordinateOfX;
-    }
-
-    // imple algorithm
-
-    /* navigate ( while algorithm --> breakdown go(STring) */
+    /* navigate ( while algorithm --> breakdown maze.go() */
     public void navigate() {
 
-        Maze maze = new Maze(row, col);
+        Maze maze = new Maze();
 
         maze.printMaze();
 
         // convert String[] to char[][]
+        char[][] map = maze.getMapChar2D();
 
-        char[][] map = convertTo2Darr(maze.map);
-
-        // pass the mapChar2D to Maze class
-        maze.mapChar2D = map;
-
-        boolean[][] visited = new boolean[map.length][map[0].length];
-
+        boolean[][] visited = maze.getVisited();
 
         // Initially starting point of the robot
-        int currentRow = row;
-        int currentCol = col;
+        int currentRow = maze.getRobotRow();
+        int currentCol = maze.getRobotCol();
 
         visited[currentRow][currentCol] = true;
-
-        // Coordinate of X point
-        int finishRow = coordinateOfFinishPoint(map)[0];
-        int finishCol = coordinateOfFinishPoint(map)[1];
 
         // Create a Stack ADT
         ArrayStack<Cell> stack = new ArrayStack<>();
@@ -72,13 +32,11 @@ class Robot {
         stack.push(currentCell);
 
 
-
-        String strDirection = "UP";
-
         LinkedList<Cell> listCellPass = new LinkedList<>();
         listCellPass.add(currentCell);
 
-        while (!stack.isEmpty()) {
+        String result = "";
+        while (!result.equals("win")) {
             // Peek the Top Cell
             currentCell = stack.peek();
             int direction = currentCell.getDirection(); // 0 --> Up || 1 --> Left || 2 --> Down || 3 --> Right
@@ -86,7 +44,7 @@ class Robot {
             currentCol = currentCell.getY();
 
             // Pass coordinate of current robot && finish point && visited Map into Maze class
-            maze.passDataToMaze(currentRow, currentCol, finishRow, finishCol, visited);
+            maze.passDataToMaze(currentRow, currentCol, visited);
 
             //  move to clockwise according to the direction state of the cell by increasing the direction variable
             currentCell.setDirection(currentCell.getDirection() + 1);
@@ -97,84 +55,77 @@ class Robot {
             stack.push(currentCell);
 
 
-
-            // Base case if we reach the Exit Gate
-            if(currentRow == finishRow && currentCol == finishCol) {
-                System.out.println("Exit");
-                break;
-            }
-
-
             // If direction is Up
             if(direction == 0) {
-                if(maze.go("UP").equals("true")) {
-                    System.out.println("UP");
+                result = maze.go("UP");
+                if(result.equals("true")) {
+
                     Cell nextCell = new Cell(currentRow - 1, currentCol);
                     visited[currentRow - 1][currentCol] = true;
 
                     /* direction reverse */
-                    currentCell.path = "DOWN";
+                    currentCell.reversePath = "DOWN";
                     listCellPass.add(currentCell);
 
                     stack.push(nextCell);
-                } /*else {
-                    System.out.println("UP Detected Wall");
-
-                }*/
-
+                }
             } else if(direction == 1) { // if direction is LEFT
-                if(maze.go("LEFT").equals("true")) {
-                    System.out.println("LEFT");
+                result = maze.go("LEFT");
+
+                if(result.equals("true")) {
                     Cell nextCell = new Cell(currentRow, currentCol - 1);
                     visited[currentRow][currentCol - 1] = true;
 
                     /* direction reverse */
-                    currentCell.path = "RIGHT";
+                    currentCell.reversePath = "RIGHT";
                     listCellPass.add(currentCell);
 
                     stack.push(nextCell);
-                } /*else {
-                    System.out.println("LEFT Detected Wall");
-                }*/
+                }
             } else if(direction == 2) { // if direction is DOWN
-                if(maze.go("DOWN").equals("true")) {
-                    System.out.println("DOWN");
+                result = maze.go("DOWN");
+                if(result.equals("true")) {
                     Cell nextCell = new Cell(currentRow + 1, currentCol);
                     visited[currentRow + 1][currentCol] = true;
 
                     /* direction reverse */
-                    currentCell.path = "UP";
+                    currentCell.reversePath = "UP";
                     listCellPass.add(currentCell);
 
                     stack.push(nextCell);
-                } /*else {
-                    System.out.println("DOWN Detected Wall");
-                }*/
+                }
             } else if(direction == 3) { // if direction is RIGHT
-                if(maze.go("RIGHT").equals("true")) {
-                    System.out.println("RIGHT");
+                result = maze.go("RIGHT");
+                if(result.equals("true")) {
                     Cell nextCell = new Cell(currentRow , currentCol + 1);
 
                     visited[currentRow][currentCol + 1] = true;
 
                     /* direction reverse */
-                    currentCell.path = "LEFT";
+                    currentCell.reversePath = "LEFT";
                     listCellPass.add(currentCell);
 
                     stack.push(nextCell);
-                } /*else {
-                    System.out.println("RIGHT Detected Wall");
-                }*/
+                }
 
             } else {
                 /* if both direction return false then retract to the cell where the robot located*/
                 visited[currentCell.getX()][currentCell.getY()] = false;
                 /*System.out.println("Back " +  currentCell.path);*/
-                System.out.println("Back " + listCellPass.getLast().path);
+                System.out.print("ROBOT BACKTRACKING " + listCellPass.getLast().reversePath + " TO THE NEW COORDINATE ");
+                switch (listCellPass.getLast().reversePath) {
+                    case "UP" -> System.out.print("[ " + (currentRow - 1) + ", " + (currentCol) + " ]" + Main.ANSI_CYAN+ " [RETRACT]" + Main.ANSI_RESET + " " + Main.ANSI_GREEN+ "[UP]" + Main.ANSI_RESET);
+                    case "DOWN" -> System.out.print("[" + (currentRow + 1) + ", " + (currentCol) + "]" + Main.ANSI_CYAN+ " [RETRACT]" + Main.ANSI_RESET + " " + Main.ANSI_GREEN+ "[DOWN]" + Main.ANSI_RESET);
+                    case "LEFT" -> System.out.print("[" + (currentRow) + ", " + (currentCol - 1) + "]" + Main.ANSI_CYAN+ " [RETRACT]" + Main.ANSI_RESET + " " + Main.ANSI_GREEN+ "[LEFT]" + Main.ANSI_RESET);
+                    case "RIGHT" -> System.out.print("[" + (currentRow) + ", " + (currentCol + 1) + "]" + Main.ANSI_CYAN+ " [RETRACT]" + Main.ANSI_RESET + " " + Main.ANSI_GREEN+ "[RIGHT]" + Main.ANSI_RESET);
+                }
+                System.out.println();
                 listCellPass.removeLast();
                 stack.pop();
             }
         }
+        System.out.println("The step for the robot to exit the maze is: " + maze.getSteps());
+
     }
 
 }

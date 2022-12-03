@@ -3,7 +3,7 @@ public class Cell {
     private int y;
     private int direction; // 0 --> Up || 1 --> Left || 2 --> Down || 3 --> Right
 
-    public String path;
+    public String reversePath;
 
     public Cell(int x, int y) {
         this.x = x;
