@@ -42,12 +42,12 @@ public class Maze {
         cols = 10;
         map = new String[rows];
         map[0] = "..........";
-        map[1] = ".     .  .";
-        map[2] = "...X. .. .";
+        map[1] = ".   X .  .";
+        map[2] = "... . .. .";
         map[3] = ". ... .  .";
         map[4] = ".       ..";
         map[5] = "..........";
-        robotRow = 1;
+        robotRow = 3;
         robotCol = 7;
         steps = 0;
         directionOrder = new LinkedListStack<>();
@@ -165,7 +165,7 @@ public class Maze {
             // If none of the direction can take
             // the rat to the Food, retract back
             // to the path where the rat came from.
-            if(resetCounter > 4) {
+            if(resetCounter >= 4) {
                 visitedMap[initialPoint.getX()][initialPoint.getY()] = true;
                 initialPoint = directionOrder.peek();
                 if(initialPoint.getPrint()==0){
