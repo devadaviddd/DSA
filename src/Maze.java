@@ -25,14 +25,21 @@ public class Maze {
 
 
     public Maze() {
-        String[] map = new String[7];
-        map[0] = "................";
+        String[] map = new String[6];
+     /*   map[0] = "................";
         map[1] = ".              .";
         map[2] = ".....          .";
         map[3] = ".   .          .";
         map[4] = ".    .         .";
         map[5] = ".  .          X.";
-        map[6] = "................";
+        map[6] = "................";*/
+
+        map[0] = "..........";
+        map[1] = ".     .X .";
+        map[2] = "... . .. .";
+        map[3] = ". ... .  .";
+        map[4] = ".       ..";
+        map[5] = "..........";
 
 /*
         map[0] = ".....";
@@ -52,8 +59,8 @@ public class Maze {
 
         this.rowsMap = map.length;
         this.colsMap = map[0].length();
-        this.robotCol = 1;
-        this.robotRow = 1;
+        this.robotCol = 3;
+        this.robotRow = 2;
         this.visited = new boolean[rowsMap][colsMap];
 
         this.mapChar2D = convertTo2Darr(this.map);
