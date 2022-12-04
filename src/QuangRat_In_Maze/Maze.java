@@ -42,13 +42,13 @@ public class Maze {
         cols = 10;
         map = new String[rows];
         map[0] = "..........";
-        map[1] = ".     .X .";
-        map[2] = "... . .. .";
+        map[1] = ".     .  .";
+        map[2] = "...X. .. .";
         map[3] = ". ... .  .";
         map[4] = ".       ..";
         map[5] = "..........";
-        robotRow = 2;
-        robotCol = 3;
+        robotRow = 1;
+        robotCol = 7;
         steps = 0;
         directionOrder = new LinkedListStack<>();
         visitedMap = new boolean[rows][cols];
@@ -264,7 +264,7 @@ class Robot {
         
     //It is guarantee that there is a possible exit
         while(!result.equals("win")){
-            boolean reset = true;
+            boolean reset = true; //Use to reset to Up direction (0) for every run
 
             if(reset){
                 result = maze.go(0); //UP
@@ -272,7 +272,7 @@ class Robot {
                     break;
                 }
             }
-            if(result.equals("true")){
+            if(result.equals("true")){ //If the go func is executed, deactivate other direction go function until the new loop
                 reset = false;
             }
 
