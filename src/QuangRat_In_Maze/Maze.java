@@ -17,14 +17,14 @@ public class Maze {
     public Maze() {
         // Note: in my real test, I will create much larger
         // and more complicated map
-        rows = 5;
-        cols = 5;
-        map = new String[rows];
-        map[0] = ".....";
-        map[1] = ". .X.";
-        map[2] = ".   .";
-        map[3] = ". . .";
-        map[4] = ".....";
+//        rows = 5;
+//        cols = 5;
+//        map = new String[rows];
+//        map[0] = ".....";
+//        map[1] = ". .X.";
+//        map[2] = ".   .";
+//        map[3] = ". . .";
+//        map[4] = ".....";
 
 //        rows = 6;
 //        cols = 6;
@@ -35,6 +35,18 @@ public class Maze {
 //        map[3] = ".X... .";
 //        map[4] = ".     .";
 //        map[5] = ".......";
+//        robotRow = 2;
+//        robotCol = 3;
+
+        rows = 6;
+        cols = 10;
+        map = new String[rows];
+        map[0] = "..........";
+        map[1] = ".     .X .";
+        map[2] = "... . .. .";
+        map[3] = ". ... .  .";
+        map[4] = ".       ..";
+        map[5] = "..........";
         robotRow = 2;
         robotCol = 3;
         steps = 0;
@@ -90,7 +102,7 @@ public class Maze {
                 return "win";
             }
 
-            if (d == 0 && d == a) {
+            if (d == 0 && d == a ) {
                 // Checking the Up direction.
                 if (robotRow - 1 >= 1 && (mazeInt[robotRow - 1][robotCol] == 32 || mazeInt[robotRow - 1][robotCol] == 88) &&
                         visitedMap[robotRow - 1][robotCol]) {
@@ -164,9 +176,6 @@ public class Maze {
                     System.out.println("Up Back");
                 }else if (initialPoint.getPrint()==3) {
                     System.out.println("Left Back");
-                }else if (initialPoint.getPrint()>=4) {
-                    System.out.println(initialPoint.getDir());
-                    System.out.println("Go Back"); //Check for go back
                 }
                 directionOrder.pop();
 
@@ -252,87 +261,54 @@ class Robot {
     public void navigate() {
         Maze maze = new Maze();
         String result = "";
-
+        
+    //It is guarantee that there is a possible exit
         while(!result.equals("win")){
+            boolean reset = true;
 
-            result = maze.go(0); //UP
-            if(result.equals("win")){
-                break;
+            if(reset){
+                result = maze.go(0); //UP
+                if(result.equals("win")){
+                    break;
+                }
+            }
+            if(result.equals("true")){
+                reset = false;
             }
 
-            result = maze.go(1); //LEFT
-            if(result.equals("win")){
-                break;
+
+            if(reset){
+                result = maze.go(1); //LEFT
+                if(result.equals("win")){
+                    break;
+                }
+            }
+            if(result.equals("true")){
+                reset = false;
             }
 
-            result = maze.go(2); //DOWN
-            if(result.equals("win")){
-                break;
+            if(reset){
+                result = maze.go(2); //DOWN
+                if(result.equals("win")){
+                    break;
+                }
+            }
+            if(result.equals("true")){
+                reset = false;
             }
 
-            result = maze.go(3); //RIGHT
-            if(result.equals("win")){
-                break;
+            if(reset){
+                result = maze.go(3); //RIGHT
+                if(result.equals("win")){
+                    break;
+                }
+            }
+            if(result.equals("true")){
+                reset = false;
             }
         }
         System.out.println("Exit Reached");
 
-
-        //It is guarantee that there is a possible exit
-
-//        while(!result.equals("win")){
-////            result = maze.go(0);
-////            if(result.equals("win")){
-////                break;
-////            } else if (result.equals("true")) {
-////                System.out.println("UP");
-////            }
-//
-//            do {
-//                result = maze.go(0); //UP
-//                if(result.equals("win")){
-//                    break;
-//                }
-//            }while (result.equals("true"));
-//            if(result.equals("win")){
-//                System.out.println("UP");
-//                break;
-//            }
-//
-//            do {
-//                result = maze.go(1); //LEFT
-//                if(result.equals("win")){
-//                    break;
-//                }
-//            }while (result.equals("true"));
-//            if(result.equals("win")){
-//                System.out.println("LEFT");
-//                break;
-//            }
-//
-//            do {
-//                result = maze.go(2); //DOWN
-//                if(result.equals("win")){
-//                    break;
-//                }
-//            }while (result.equals("true"));
-//            if(result.equals("win")){
-//                System.out.println("DOWN");
-//                break;
-//            }
-//
-//            do {
-//                result = maze.go(3); //RIGHT
-//                if(result.equals("win")){
-//                    break;
-//                }
-//            }while (result.equals("true"));
-//            if(result.equals("win")){
-//                System.out.println("RIGHT");
-//                break;
-//            }
-//        }
-//        System.out.println("Exit Reached");
 
     }
 
