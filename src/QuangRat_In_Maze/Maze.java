@@ -17,14 +17,16 @@ public class Maze {
     public Maze() {
         // Note: in my real test, I will create much larger
         // and more complicated map
-//        rows = 5;
-//        cols = 5;
-//        map = new String[rows];
-//        map[0] = ".....";
-//        map[1] = ". .X.";
-//        map[2] = ".   .";
-//        map[3] = ". . .";
-//        map[4] = ".....";
+        rows = 5;
+        cols = 5;
+        map = new String[rows];
+        map[0] = ".....";
+        map[1] = ". .X.";
+        map[2] = ".   .";
+        map[3] = ". . .";
+        map[4] = ".....";
+        robotRow = 1;
+        robotCol = 1;
 
 //        rows = 6;
 //        cols = 6;
@@ -38,17 +40,33 @@ public class Maze {
 //        robotRow = 2;
 //        robotCol = 3;
 
-        rows = 6;
-        cols = 10;
-        map = new String[rows];
-        map[0] = "..........";
-        map[1] = ".   X .  .";
-        map[2] = "... . .. .";
-        map[3] = ". ... .  .";
-        map[4] = ".       ..";
-        map[5] = "..........";
-        robotRow = 3;
-        robotCol = 7;
+//        rows = 6;
+//        cols = 10;
+//        map = new String[rows];
+//        map[0] = "..........";
+//        map[1] = ".   X .  .";
+//        map[2] = "... . .. .";
+//        map[3] = ". ... .  .";
+//        map[4] = ".       ..";
+//        map[5] = "..........";
+//        robotRow = 3;
+//        robotCol = 7;
+
+//        rows = 10;
+//        cols = 15;
+//        map = new String[rows];
+//        map[0] = "...............";
+//        map[1] = ".     .      ..";
+//        map[2] = "... .   ....  .";
+//        map[3] = ". ... .       .";
+//        map[4] = ".  .    .  .  .";
+//        map[5] = ".  .    .  .  .";
+//        map[6] = ".  .    .X . ..";
+//        map[7] = ".    ..... .  .";
+//        map[8] = ".          .  .";
+//        map[9] = "...............";
+//        robotRow = 1;
+//        robotCol = 9;
         steps = 0;
         directionOrder = new LinkedListStack<>();
         visitedMap = new boolean[rows][cols];
@@ -72,7 +90,17 @@ public class Maze {
 
     }
 
-    public String go(int a) {
+    public String go(String direction) {
+        int directionCurrent; //direction in term of Integer
+        if(direction.equals("UP")){
+            directionCurrent = 0;
+        } else if (direction.equals("LEFT")) {
+            directionCurrent = 1;
+        } else if (direction.equals("DOWN")) {
+            directionCurrent = 2;
+        }else {
+            directionCurrent = 3;
+        }
         if (!directionOrder.isEmpty()) {
 
             // Pop the top node and move to the
@@ -87,7 +115,7 @@ public class Maze {
 
             // Increment the direction and
             // push the node in the stack again.
-            if(d == a){
+            if(d == directionCurrent){
                 initialPoint.setDir(initialPoint.getDir() + 1);
             }else {
                 initialPoint.setDir(initialPoint.getDir());
@@ -96,66 +124,72 @@ public class Maze {
             directionOrder.pop();
             directionOrder.push(initialPoint);
 
-            // If we reach the Food coordinates
-            // return true
-            if (mazeInt[robotRow][robotCol] == 88) {
-                return "win";
-            }
-
-            if (d == 0 && d == a ) {
+            if (d == 0 && d == directionCurrent ) {
                 // Checking the Up direction.
                 if (robotRow - 1 >= 1 && (mazeInt[robotRow - 1][robotCol] == 32 || mazeInt[robotRow - 1][robotCol] == 88) &&
                         visitedMap[robotRow - 1][robotCol]) {
                     System.out.println("UP");
                     if (mazeInt[robotRow-1][robotCol] == 88) {
+                        System.out.println("Exit Reached");
+                        System.out.println("The robot took " + (steps+1) + " to escape the maze!!");
                         return "win";
                     }
                     Node temp1 = new Node(robotRow - 1, robotCol,0);
                     visitedMap[robotRow - 1][robotCol] = false;
                     directionOrder.push(temp1);
                     resetCounter=0;
+                    steps++;
                     return "true";
                 }
-            } else if (d == 1 && d == a) {
+            } else if (d == 1 && d == directionCurrent) {
                 // Checking the left direction
                 if (robotCol - 1 >= 1 && (mazeInt[robotRow][robotCol - 1] == 32 || mazeInt[robotRow][robotCol - 1] == 88) &&
                         visitedMap[robotRow][robotCol - 1]) {
                     System.out.println("LEFT");
                     if (mazeInt[robotRow][robotCol - 1] == 88) {
+                        System.out.println("Exit Reached");
+                        System.out.println("The robot took " + (steps+1) + " to escape the maze!!");
                         return "win";
                     }
                     Node temp1 = new Node(robotRow, robotCol - 1,1);
                     visitedMap[robotRow][robotCol - 1] = false;
                     directionOrder.push(temp1);
                     resetCounter=0;
+                    steps++;
                     return "true";
                 }
-            } else if (d == 2 && d == a) {
+            } else if (d == 2 && d == directionCurrent) {
                 // Checking the down direction
                 if (robotRow + 1 < rows && (mazeInt[robotRow + 1][robotCol] == 32 || mazeInt[robotRow + 1][robotCol] == 88) &&
                         visitedMap[robotRow + 1][robotCol]) {
                     System.out.println("DOWN");
                     if (mazeInt[robotRow+1][robotCol] == 88) {
+                        System.out.println("Exit Reached");
+                        System.out.println("The robot took " + (steps+1) + " to escape the maze!!");
                         return "win";
                     }
                     Node temp1 = new Node(robotRow + 1, robotCol,2);
                     visitedMap[robotRow + 1][robotCol] = false;
                     directionOrder.push(temp1);
                     resetCounter=0;
+                    steps++;
                     return "true";
                 }
-            } else if (d == 3 && d == a) {
+            } else if (d == 3 && d == directionCurrent) {
                 // Checking the right direction
                 if (robotCol + 1 < cols && (mazeInt[robotRow][robotCol + 1] == 32 || mazeInt[robotRow][robotCol + 1] == 88) &&
                         visitedMap[robotRow][robotCol + 1]) {
                     System.out.println("Right");
                     if (mazeInt[robotRow][robotCol + 1] == 88) {
+                        System.out.println("Exit Reached");
+                        System.out.println("The robot took " + (steps+1) + " to escape the maze!!");
                         return "win";
                     }
                     Node temp1 = new Node(robotRow, robotCol + 1,3);
                     visitedMap[robotRow][robotCol + 1] = false;
                     directionOrder.push(temp1);
                     resetCounter=0;
+                    steps++;
                     return "true";
                 }
             }
@@ -169,12 +203,16 @@ public class Maze {
                 visitedMap[initialPoint.getX()][initialPoint.getY()] = true;
                 initialPoint = directionOrder.peek();
                 if(initialPoint.getPrint()==0){
+                    steps++;
                     System.out.println("Down Back");
                 } else if (initialPoint.getPrint()==1) {
+                    steps++;
                     System.out.println("Right Back");
                 } else if (initialPoint.getPrint()==2) {
+                    steps++;
                     System.out.println("Up Back");
                 }else if (initialPoint.getPrint()==3) {
+                    steps++;
                     System.out.println("Left Back");
                 }
                 directionOrder.pop();
@@ -267,7 +305,7 @@ class Robot {
             boolean reset = true; //Use to reset to Up direction (0) for every run
 
             if(reset){
-                result = maze.go(0); //UP
+                result = maze.go("UP"); //UP
                 if(result.equals("win")){
                     break;
                 }
@@ -278,7 +316,7 @@ class Robot {
 
 
             if(reset){
-                result = maze.go(1); //LEFT
+                result = maze.go("LEFT"); //LEFT
                 if(result.equals("win")){
                     break;
                 }
@@ -288,7 +326,7 @@ class Robot {
             }
 
             if(reset){
-                result = maze.go(2); //DOWN
+                result = maze.go("DOWN"); //DOWN
                 if(result.equals("win")){
                     break;
                 }
@@ -298,7 +336,7 @@ class Robot {
             }
 
             if(reset){
-                result = maze.go(3); //RIGHT
+                result = maze.go("RIGHT"); //RIGHT
                 if(result.equals("win")){
                     break;
                 }
@@ -307,8 +345,6 @@ class Robot {
                 reset = false;
             }
         }
-        System.out.println("Exit Reached");
-
 
     }
 
