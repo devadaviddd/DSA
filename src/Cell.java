@@ -1,39 +1,30 @@
 public class Cell {
-    private int x;
-    private int y;
-    private int direction; // 0 --> Up || 1 --> Left || 2 --> Down || 3 --> Right
+    String direction;
+    int pattern = 0;
 
-    public String reversePath;
-
-    public Cell(int x, int y) {
-        this.x = x;
-        this.y = y;
-        direction = 0;
+    public Cell(String direction, int i) {
+        this.direction = direction;
+        this.pattern = i;
     }
 
-    public Cell() {}
-
-    public int getX() {
-        return x;
+    public Cell(String direction) {
+        this.direction = direction;
+        this.pattern = 0;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public int getDirection() {
+    public String getDirection() {
         return direction;
     }
 
-    public void setDirection(int direction) {
+    public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public int getPattern() {
+        return pattern;
+    }
+
+    public void setPattern(int pattern) {
+        this.pattern = pattern;
     }
 }

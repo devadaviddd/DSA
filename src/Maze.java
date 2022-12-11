@@ -9,8 +9,8 @@ public class Maze {
     public Maze() {
         // Note: in my real test, I will create much larger
         // and more complicated map
-        rows = 6;
-        cols = 10;
+        rows = 7;
+        cols = 8;
         map = new String[rows];
 
         /* .....
@@ -18,20 +18,26 @@ public class Maze {
            .S  .
            .....
         * */
-      /*  map[0] = ".....";
+       /* map[0] = ".....";
         map[1] = ". ...";
         map[2] = ".  X.";
         map[3] = ".....";*/
 
-        map[0] = "..........";
+/*        map[0] = "..........";
         map[1] = ".     .X .";
         map[2] = "... . .. .";
         map[3] = ". ... .  .";
         map[4] = ".       ..";
-        map[5] = "..........";
+        map[5] = "..........";*/
 
-
- /*       map[0]  = "....................................................................................................";
+        map[0] = "........";
+        map[1] = ".      .";
+        map[2] = ".....  .";
+        map[3] = ".  X.  .";
+        map[4] = ".    . .";
+        map[5] = ".  .   .";
+        map[6] = "........";
+/*        map[0]  = "....................................................................................................";
         map[1]  = ".                                              ..                                                  .";
         map[2]  = ".                                              ..                          ..                      .";
         map[3]  = ".                                              ..                          ..                      .";
@@ -54,12 +60,12 @@ public class Maze {
         map[20] = ".    ..     ....    ..     ....             ..      ..    .....            ..    ..........        .";
         map[21] = ".    ..       ..    ..       ..             ..      ..    ...              ..    ..........        .";
         map[22] = ".                                                                          ..                      .";
-        map[23] = ".      .            .           .            .                             ..                      .";
+        map[23] = ".      .            .           .            .                             ..               X      .";
         map[24] = ".      .     .      .           .            .                             ..                      .";
         map[25] = ".      .     .      .                        .        .                    ..                      .";
         map[26] = ".      .     .      .                        .        .                    ..                      .";
         map[27] = ".      .     .      .           .            .        .                    ..                      .";
-        map[28] = ".            .                  .                     .                    ..            X         .";
+        map[28] = ".            .                  .                     .                    ..                      .";
         map[29] = "....................................................................................................";*/
         robotRow = 1;
         robotCol = 1;
@@ -139,6 +145,8 @@ public class Maze {
         if (map[currentRow].charAt(currentCol) == 'X') {
             // Exit gate
             steps++;
+            robotRow = currentRow;
+            robotCol = currentCol;
             System.out.println("Steps to reach the Exit gate " + steps);
             return "win";
         } else if (map[currentRow].charAt(currentCol) == '.') {

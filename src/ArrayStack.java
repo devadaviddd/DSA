@@ -2,7 +2,7 @@
 // Array-based implementation of stack
 public class ArrayStack<T> {
     private int size;
-    private static int MAX_SIZE = 100;
+    private static int MAX_SIZE = 10000;
     private T[] items;
 
     public ArrayStack() {
