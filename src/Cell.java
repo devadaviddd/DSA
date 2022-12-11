@@ -11,6 +11,8 @@ public class Cell {
         direction = 0;
     }
 
+    public Cell() {}
+
     public int getX() {
         return x;
     }
