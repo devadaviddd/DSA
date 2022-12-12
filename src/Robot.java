@@ -1,7 +1,7 @@
 import javax.sql.rowset.RowSetWarning;
 
 public class Robot {
-    private int row = 1000;
+    private int row = 1000; // origin (1000, 1000)
     private int col = 1000;
     /*private Linkedlist<Coordinate> visitedList;*/
 
@@ -17,7 +17,6 @@ public class Robot {
         Maze maze = new Maze();
         String result = "";
         stackDirection = new LinkedListStack<>();
-        int pair = 0;
         drawMap = new char[maze.getRows()][maze.getCols()];
 
         convertTo2Darr(maze.getMap());
@@ -31,20 +30,16 @@ public class Robot {
 
         // go return false | win | true
         visitedGraph[row][col] = true;
-        Cell initialStart = initialDirection(maze);
-        stackDirection.push(initialStart);
-        visitedGraph[row][col] = true;
-
+        stackDirection.push(new Cell("SPAWNING", 0));
 
         while (!result.equals("win")) {
-            Cell currentCell = stackDirection.peek();
+            Cell currentCell = stackDirection.peek(); // 0 iteration 2 --> 1
             int pattern = currentCell.getPattern();
 
             // advance to follow the direction of anti clock
             currentCell.setPattern(currentCell.getPattern() + 1);
             stackDirection.pop();
             stackDirection.push(currentCell);
-
 
             // UP
             if(pattern == 0) {
@@ -63,7 +58,7 @@ public class Robot {
                         break;
                     }
                 }
-            } else if(pattern == 1) { // LEFT
+            } else if(pattern == 1) { // RIGHT
                 if(!visitedGraph[row][col + 1]) {
                     result = maze.go("RIGHT");
                     if (result.equals("true")) {
@@ -92,7 +87,7 @@ public class Robot {
                         break;
                     }
                 }
-            } else if(pattern == 3) { // RIGHT
+            } else if(pattern == 3) { // LEFT
                 if(!visitedGraph[row][col - 1]) {
                     result = maze.go("LEFT");
                     if(result.equals("true")) {
@@ -108,8 +103,10 @@ public class Robot {
                     }
                 }
             } else {
-                visitedGraph[row][col] = false;
-                Cell backtrackCell = stackDirection.peek();
+/*
+                visitedGraph[row][col] = false; // cell dang dung robot --> unvisited
+*/
+                Cell backtrackCell = stackDirection.peek(); // cordinate cell dang dung
                 stackDirection.pop();
 
                 // reset the pattern for the next cell
@@ -130,22 +127,7 @@ public class Robot {
             row++;
             System.out.println("DOWN: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
 
-
             /*peek.setPattern(2);*/
-        } else if(direction.equals("LEFT")) { // move back RIGHT
-            maze.go("RIGHT");
-            col++;
-            System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-
-
-            /*peek.setPattern(3);*/
-        } else if(direction.equals("DOWN")) { // move back UP
-            maze.go("UP");
-            row--;
-            System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-
-
-            /*peek.setPattern(0);*/
         } else if(direction.equals("RIGHT")) { // move back LEFT
             maze.go("LEFT");
             col--;
@@ -153,11 +135,21 @@ public class Robot {
 
 
             /*peek.setPattern(1);*/
-        }
+        } else if(direction.equals("DOWN")) { // move back UP
+            maze.go("UP");
+            row--;
+            System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
 
+
+            /*peek.setPattern(0);*/
+        } else if(direction.equals("LEFT")) { // move back RIGHT
+            maze.go("RIGHT");
+            col++;
+            System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+        }
     }
 
-    private Cell initialDirection(Maze maze) {
+/*    private Cell initialDirection(Maze maze) {
         if(maze.go("UP").equals("true")) {
             row--;
             System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
@@ -186,7 +178,7 @@ public class Robot {
         } else {
             return new Cell("constraint cover", 5);
         }
-    }
+    }*/
 
     public void convertTo2Darr(String[] map) {
         for(int i = 0; i < map.length; i++) {
