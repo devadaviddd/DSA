@@ -1,12 +1,11 @@
-import javax.sql.rowset.RowSetWarning;
-
 public class Robot {
-    private int row = 1000; // origin (1000, 1000)
-    private int col = 1000;
-    /*private Linkedlist<Coordinate> visitedList;*/
+    private int visitedRow = 1000; // origin (1000, 1000)
+    private int visitedCol = 1000;
+
 
     private boolean[][] visitedGraph = new boolean[2000][2000];
 
+    /*private Linkedlist<Coordinate> visitedList;*/
     static  LinkedListStack<Cell> stackDirection;
 
 
@@ -17,8 +16,8 @@ public class Robot {
         Maze maze = new Maze();
         String result = "";
         stackDirection = new LinkedListStack<>();
-        drawMap = new char[maze.getRows()][maze.getCols()];
 
+        drawMap = new char[maze.getRows()][maze.getCols()]; //this is used for illustration only
         convertTo2Darr(maze.getMap());
 
         /*visitedList = new Linkedlist<>();*/
@@ -29,7 +28,7 @@ public class Robot {
         // 0 --> 1 --> 2 --> 3
 
         // go return false | win | true
-        visitedGraph[row][col] = true;
+        visitedGraph[visitedRow][visitedCol] = true;
         stackDirection.push(new Cell("SPAWNING", 0));
 
         while (!result.equals("win")) {
@@ -43,62 +42,62 @@ public class Robot {
 
             // UP
             if(pattern == 0) {
-                if(!visitedGraph[row - 1][col]) {
+                if(!visitedGraph[visitedRow - 1][visitedCol]) {
                     result = maze.go("UP");
                     if(result.equals("true")) {
-                        visitedGraph[row - 1][col] = true;
-                        row--;
-                        System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedGraph[visitedRow - 1][visitedCol] = true;
+                        visitedRow--;
+                        System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
                         stackDirection.push(new Cell("UP"));
 
                     } else if(result.equals("win")) {
-                        row--;
-                        System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedRow--;
+                        System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         break;
                     }
                 }
             } else if(pattern == 1) { // RIGHT
-                if(!visitedGraph[row][col + 1]) {
+                if(!visitedGraph[visitedRow][visitedCol + 1]) {
                     result = maze.go("RIGHT");
                     if (result.equals("true")) {
-                        visitedGraph[row][col + 1] = true;
-                        col++;
-                        System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedGraph[visitedRow][visitedCol + 1] = true;
+                        visitedCol++;
+                        System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';                        stackDirection.push(new Cell("RIGHT"));
 
                     } else if(result.equals("win")) {
-                        col++;
-                        System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedCol++;
+                        System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         break;
                     }
                 }
             } else if(pattern == 2) { // DOWN
-                if(!visitedGraph[row + 1][col]) {
+                if(!visitedGraph[visitedRow + 1][visitedCol]) {
                     result = maze.go("DOWN");
                     if (result.equals("true")) {
-                        visitedGraph[row + 1][col] = true;
-                        row++;
-                        System.out.println("DOWN: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedGraph[visitedRow + 1][visitedCol] = true;
+                        visitedRow++;
+                        System.out.println("DOWN: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';                        stackDirection.push(new Cell("DOWN"));
                     } else if(result.equals("win")) {
-                        row++;
-                        System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedRow++;
+                        System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         break;
                     }
                 }
             } else if(pattern == 3) { // LEFT
-                if(!visitedGraph[row][col - 1]) {
+                if(!visitedGraph[visitedRow][visitedCol - 1]) {
                     result = maze.go("LEFT");
                     if(result.equals("true")) {
-                        visitedGraph[row][col - 1] = true;
-                        col--;
-                        System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedGraph[visitedRow][visitedCol - 1] = true;
+                        visitedCol--;
+                        System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
                         stackDirection.push(new Cell("LEFT"));
                     } else if(result.equals("win")) {
-                        col--;
-                        System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+                        visitedCol--;
+                        System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
                         break;
                     }
                 }
@@ -122,30 +121,31 @@ public class Robot {
 
     private void advanceRobotCoordinate(String direction, Cell peek, Maze maze) {
         // reverse coordinate
+
         if(direction.equals("UP")) { // move back DOWN
             maze.go("DOWN");
-            row++;
-            System.out.println("DOWN: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+            visitedRow++;
+            System.out.println("DOWN: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
 
             /*peek.setPattern(2);*/
         } else if(direction.equals("RIGHT")) { // move back LEFT
             maze.go("LEFT");
-            col--;
-            System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+            visitedCol--;
+            System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
 
 
             /*peek.setPattern(1);*/
         } else if(direction.equals("DOWN")) { // move back UP
             maze.go("UP");
-            row--;
-            System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+            visitedRow--;
+            System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
 
 
             /*peek.setPattern(0);*/
         } else if(direction.equals("LEFT")) { // move back RIGHT
             maze.go("RIGHT");
-            col++;
-            System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
+            visitedCol++;
+            System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + visitedRow + "," + visitedCol + ")");
         }
     }
 
