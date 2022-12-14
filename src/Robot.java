@@ -65,7 +65,8 @@ public class Robot {
                         visitedGraph[row][col + 1] = true;
                         col++;
                         System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-                        drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';                        stackDirection.push(new Cell("RIGHT"));
+                        drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
+                        stackDirection.push(new Cell("RIGHT"));
 
                     } else if(result.equals("win")) {
                         col++;
@@ -148,37 +149,6 @@ public class Robot {
             System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
         }
     }
-
-/*    private Cell initialDirection(Maze maze) {
-        if(maze.go("UP").equals("true")) {
-            row--;
-            System.out.println("UP: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-            drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
-
-            return new Cell("UP", 0);
-        } else if(maze.go("LEFT").equals("true")) {
-            System.out.println("LEFT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-            drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
-            col--;
-
-            return new Cell("LEFT", 3);
-        } else if(maze.go("DOWN").equals("true")) {
-            row++;
-            System.out.println("DOWN: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-            drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
-
-
-            return new Cell("DOWN", 2);
-        } else if(maze.go("RIGHT").equals("true")) {
-            col++;
-            System.out.println("RIGHT: " + maze.getRobotRow() + " " + maze.getRobotCol() + " " + "(" + row + "," + col + ")");
-            drawMap[maze.getRobotRow()][maze.getRobotCol()] = '+';
-
-            return new Cell("RIGHT", 1);
-        } else {
-            return new Cell("constraint cover", 5);
-        }
-    }*/
 
     public void convertTo2Darr(String[] map) {
         for(int i = 0; i < map.length; i++) {
